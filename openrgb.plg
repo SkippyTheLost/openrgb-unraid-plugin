@@ -1,22 +1,29 @@
 <?xml version='1.0' standalone='yes'?>
 
 <!DOCTYPE PLUGIN [
-<!ENTITY name      "openrgb">
-<!ENTITY author    "SkippyTheLost">
-<!ENTITY version   "2025.07.16">
-<!ENTITY launch    "Tools/OpenRGB">
-<!ENTITY pluginURL "https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/openrgb.plg">
+  <!ENTITY name "openrgb">
+  <!ENTITY author "SkippyTheLost">
+  <!ENTITY version "2025.07.16">
+  <!ENTITY pluginURL "https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/openrgb.plg">
 ]>
+
 <PLUGIN name="&name;"
         author="&author;"
-        launch="&launch;"
         version="&version;"
         pluginURL="&pluginURL;"
+        launch="&launch;"
+        icon="icon-openrgb.png"
         max="7.1.4">
 
+<CHANGES>
+###2025.07.16.0
+- Initial release.
+</CHANGES>
+
 <!-- Install script -->
-<FILE Run="/bin/bash" Method="install">
+<FILE Run="/bin/bash">
 <INLINE>
+<![CDATA[
 # Create install directory
 mkdir -p /usr/local/emhttp/plugins/openrgb/bin
 cd /usr/local/emhttp/plugins/openrgb/bin
@@ -33,44 +40,50 @@ mkdir -p /boot/config/plugins/openrgb
 cat <<EOF > /boot/config/plugins/openrgb/rc.openrgb
 #!/bin/bash
 
-# Optional kernel modules you might need for OpenRGB:
+# Kernel module notes (uncomment if needed):
 # modprobe i2c-dev
 # modprobe hid-generic
 # modprobe hidraw
 
-# Log and run OpenRGB
 logger "OpenRGB rc script launched"
 /usr/local/bin/openrgb --startminimized &
 EOF
+
 chmod +x /boot/config/plugins/openrgb/rc.openrgb
 
-# Add boot persistence
+# Add boot script to /boot/config/go if not already present
 if ! grep -q "/boot/config/plugins/openrgb/rc.openrgb" /boot/config/go; then
-    echo "/boot/config/plugins/openrgb/rc.openrgb" >> /boot/config/go
+  echo "/boot/config/plugins/openrgb/rc.openrgb" >> /boot/config/go
 fi
 
 echo ""
-echo " &name; has been installed."
+echo "openrgb has been installed."
 echo ""
+]]>
 </INLINE>
 </FILE>
 
-<!-- Uninstall script -->
+<!-- Plugin icon -->
+<FILE Name="/usr/local/emhttp/plugins/openrgb/images/icon-openrgb.png">https://ossmalta.eu/wp-content/uploads/2020/12/openrgb-icon.png</FILE>
+
+<!-- Remove script -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-# Remove files and symlink
+<![CDATA[
+# Remove binary and plugin files
 rm -f /usr/local/bin/openrgb
 rm -rf /usr/local/emhttp/plugins/openrgb
 
-# Remove rc script call from go file
+# Remove rc script from go file
 sed -i '\|/boot/config/plugins/openrgb/rc.openrgb|d' /boot/config/go
 rm -f /boot/config/plugins/openrgb/rc.openrgb
 
 echo ""
-echo " &name; has been uninstalled."
+echo "openrgb has been uninstalled."
 echo ""
 
 exit 0
+]]>
 </INLINE>
 </FILE>
 

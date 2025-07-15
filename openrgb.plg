@@ -14,11 +14,6 @@
         pluginURL="&pluginURL;"
         max="7.1.4">
 
-<CHANGES>
-###2025.07.16.0
-- Initial release.
-</CHANGES>
-
 <!-- Install script -->
 <FILE Run="/bin/bash" Method="install">
 <INLINE>

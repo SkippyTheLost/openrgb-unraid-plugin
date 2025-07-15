@@ -2,51 +2,56 @@
 
 <!DOCTYPE PLUGIN [
 <!ENTITY name      "openrgb">
-<!ENTITY repo      "openrgb-unraid-plugin">
 <!ENTITY author    "SkippyTheLost">
 <!ENTITY version   "2025.07.16">
 <!ENTITY launch    "Tools/Preclear">
-<!ENTITY gitURL    "https://raw.githubusercontent.com/&author;/&repo;/master">
-<!ENTITY pluginURL "&gitURL;/plugins/&name;.plg">
-<!ENTITY scriptVer "20">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/openrgb.plg">
 ]>
 <PLUGIN name="&name;"
-		author="&author;"
-		launch="&launch;"
-		version="&version;"
-		pluginURL="&pluginURL;"
-		icon="icon-openrgb"
-		max="7.1.4">
+        author="&author;"
+        launch="&launch;"
+        version="&version;"
+        pluginURL="&pluginURL;"
+        icon="icon-openrgb.png"
+        max="7.1.4">
 
 <CHANGES>
 ###2025.07.16.0
 - Initial release.
 </CHANGES>
 
-<!--
-The 'packages-install' script.
--->
+<!-- Install script -->
 <FILE Run="/bin/bash">
 <INLINE>
-# Download OpenRGB binary
-mkdir -p /usr/local/bin/openrgb
-cd /usr/local/bin/openrgb
+# Create install directory
+mkdir -p /usr/local/emhttp/plugins/openrgb/bin
+cd /usr/local/emhttp/plugins/openrgb/bin
+
+# Download OpenRGB AppImage
 curl -LO https://openrgb.org/releases/release_0.9/OpenRGB_0.9_x86_64.AppImage
 chmod +x OpenRGB_0.9_x86_64.AppImage
 
-# Optional: create symlink
-ln -sf /usr/local/bin/openrgb/OpenRGB_0.9_x86_64.AppImage /usr/local/bin/openrgb/openrgb
+# Create symlink to make it globally accessible
+ln -sf /usr/local/emhttp/plugins/openrgb/bin/OpenRGB_0.9_x86_64.AppImage /usr/local/bin/openrgb
 
-# Add a boot script (optional)
+# Create rc script
 mkdir -p /boot/config/plugins/openrgb
 cat <<EOF > /boot/config/plugins/openrgb/rc.openrgb
 #!/bin/bash
-/usr/local/bin/openrgb/openrgb --startminimized &
+
+# Optional kernel modules you might need for OpenRGB:
+# modprobe i2c-dev
+# modprobe hid-generic
+# modprobe hidraw
+
+# Log and run OpenRGB
+logger "OpenRGB rc script launched"
+/usr/local/bin/openrgb --startminimized &
 EOF
 chmod +x /boot/config/plugins/openrgb/rc.openrgb
 
-# Add it to go file if not already
-if ! grep -q "rc.openrgb" /boot/config/go; then
+# Add boot persistence
+if ! grep -q "/boot/config/plugins/openrgb/rc.openrgb" /boot/config/go; then
     echo "/boot/config/plugins/openrgb/rc.openrgb" >> /boot/config/go
 fi
 
@@ -56,13 +61,18 @@ echo ""
 </INLINE>
 </FILE>
 
-<!--
-The 'remove' script.
--->
+<!-- Plugin icon -->
+<FILE Name="/usr/local/emhttp/plugins/openrgb/images/icon-openrgb.png">https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/images/icon-openrgb.png</FILE>
+
+<!-- Uninstall script -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-rm -rf /usr/local/bin/openrgb
-sed -i '/rc.openrgb/d' /boot/config/go
+# Remove files and symlink
+rm -f /usr/local/bin/openrgb
+rm -rf /usr/local/emhttp/plugins/openrgb
+
+# Remove rc script call from go file
+sed -i '\|/boot/config/plugins/openrgb/rc.openrgb|d' /boot/config/go
 rm -f /boot/config/plugins/openrgb/rc.openrgb
 
 echo ""

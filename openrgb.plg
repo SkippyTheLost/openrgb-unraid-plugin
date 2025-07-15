@@ -13,11 +13,10 @@
         version="&version;"
         pluginURL="&pluginURL;"
         launch="&launch;"
-        icon="icon-openrgb.png"
         max="7.1.4">
 
 <!-- Install script -->
-<FILE Run="/bin/bash">
+<FILE Run="/bin/bash" Method="install">
 <INLINE>
 # Create install directory
 mkdir -p /usr/local/emhttp/plugins/openrgb/bin
@@ -35,9 +34,6 @@ echo "openrgb has been installed."
 echo ""
 </INLINE>
 </FILE>
-
-<!-- Plugin icon -->
-<FILE Name="/usr/local/emhttp/plugins/openrgb/images/icon-openrgb.png">https://ossmalta.eu/wp-content/uploads/2020/12/openrgb-icon.png</FILE>
 
 <!-- Remove script -->
 <FILE Run="/bin/bash" Method="remove">

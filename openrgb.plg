@@ -12,7 +12,6 @@
         launch="&launch;"
         version="&version;"
         pluginURL="&pluginURL;"
-        icon="icon-openrgb.png"
         max="7.1.4">
 
 <CHANGES>
@@ -21,7 +20,7 @@
 </CHANGES>
 
 <!-- Install script -->
-<FILE Run="/bin/bash">
+<FILE Run="/bin/bash" Method="install">
 <INLINE>
 # Create install directory
 mkdir -p /usr/local/emhttp/plugins/openrgb/bin
@@ -60,9 +59,6 @@ echo " &name; has been installed."
 echo ""
 </INLINE>
 </FILE>
-
-<!-- Plugin icon -->
-<FILE Name="/usr/local/emhttp/plugins/openrgb/images/icon-openrgb.png">https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/images/icon-openrgb.png</FILE>
 
 <!-- Uninstall script -->
 <FILE Run="/bin/bash" Method="remove">

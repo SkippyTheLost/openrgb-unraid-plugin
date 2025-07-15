@@ -30,27 +30,6 @@ chmod +x OpenRGB_0.9_x86_64.AppImage
 # Create symlink to make it globally accessible
 ln -sf /usr/local/emhttp/plugins/openrgb/bin/OpenRGB_0.9_x86_64.AppImage /usr/local/bin/openrgb
 
-# Create rc script
-mkdir -p /boot/config/plugins/openrgb
-cat <<EOF > /boot/config/plugins/openrgb/rc.openrgb
-#!/bin/bash
-
-# Kernel module notes (uncomment if needed):
-# modprobe i2c-dev
-# modprobe hid-generic
-# modprobe hidraw
-
-logger "OpenRGB rc script launched"
-/usr/local/bin/openrgb --startminimized &
-EOF
-
-chmod +x /boot/config/plugins/openrgb/rc.openrgb
-
-# Add boot script to /boot/config/go if not already present
-if ! grep -q "/boot/config/plugins/openrgb/rc.openrgb" /boot/config/go; then
-  echo "/boot/config/plugins/openrgb/rc.openrgb" >> /boot/config/go
-fi
-
 echo ""
 echo "openrgb has been installed."
 echo ""

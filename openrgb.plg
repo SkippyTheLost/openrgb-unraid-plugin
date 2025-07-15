@@ -4,7 +4,7 @@
 <!ENTITY name      "openrgb">
 <!ENTITY author    "SkippyTheLost">
 <!ENTITY version   "2025.07.16">
-<!ENTITY launch    "Tools/Preclear">
+<!ENTITY launch    "Tools/OpenRGB">
 <!ENTITY pluginURL "https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/openrgb.plg">
 ]>
 <PLUGIN name="&name;"

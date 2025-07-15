@@ -4,6 +4,7 @@
   <!ENTITY name "openrgb">
   <!ENTITY author "SkippyTheLost">
   <!ENTITY version "2025.07.16">
+  <!ENTITY launch "Tools/OpenRGB">
   <!ENTITY pluginURL "https://raw.githubusercontent.com/SkippyTheLost/openrgb-unraid-plugin/master/openrgb.plg">
 ]>
 
@@ -18,7 +19,6 @@
 <!-- Install script -->
 <FILE Run="/bin/bash">
 <INLINE>
-<![CDATA[
 # Create install directory
 mkdir -p /usr/local/emhttp/plugins/openrgb/bin
 cd /usr/local/emhttp/plugins/openrgb/bin
@@ -54,7 +54,6 @@ fi
 echo ""
 echo "openrgb has been installed."
 echo ""
-]]>
 </INLINE>
 </FILE>
 
@@ -64,7 +63,6 @@ echo ""
 <!-- Remove script -->
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
-<![CDATA[
 # Remove binary and plugin files
 rm -f /usr/local/bin/openrgb
 rm -rf /usr/local/emhttp/plugins/openrgb
@@ -78,7 +76,6 @@ echo "openrgb has been uninstalled."
 echo ""
 
 exit 0
-]]>
 </INLINE>
 </FILE>
 
